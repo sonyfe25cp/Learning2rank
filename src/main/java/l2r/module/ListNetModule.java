@@ -1,23 +1,16 @@
-/*
- * 作者：罗磊
- * 任何问题可以联系作者的Email：luoleicn@gmail.com
- * 
- * 遵循知识共享（CC By2.5）协议详见http://creativecommons.org/licenses/by/2.5/cn/
- */
-package listnet.module;
+package l2r.module;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import listnet.process.MSNormalizer;
-import listnet.process.Normalizer;
-import listnet.process.Normalizer.MaxMin;
+import l2r.process.MSNormalizer;
+import l2r.process.Normalizer;
+import l2r.process.Normalizer.MaxMin;
 
 /**
  * The Class ListNetModule.

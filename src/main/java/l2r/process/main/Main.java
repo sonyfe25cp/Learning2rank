@@ -1,10 +1,4 @@
-/*
- * 作者：罗磊
- * 任何问题可以联系作者的Email：luoleicn@gmail.com
- * 
- * 遵循知识共享（CC By2.5）协议详见http://creativecommons.org/licenses/by/2.5/cn/
- */
-package listnet.process.main;
+package l2r.process.main;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,13 +9,10 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.omg.Dynamic.Parameter;
-
-import listnet.data.Document;
-import listnet.data.MSDocument;
-import listnet.module.ListNetModule;
-import listnet.module.Module;
-import listnet.parameter.Parameters;
+import l2r.data.Document;
+import l2r.data.MSDocument;
+import l2r.module.ListNetModule;
+import l2r.module.Module;
 
 /**
  * 用于测试.

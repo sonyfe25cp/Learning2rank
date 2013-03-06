@@ -1,10 +1,4 @@
-/*
- * 作者：罗磊
- * 任何问题可以联系作者的Email：luoleicn@gmail.com
- * 
- * 遵循知识共享（CC By2.5）协议详见http://creativecommons.org/licenses/by/2.5/cn/
- */
-package listnet.process;
+package l2r.process;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,9 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import listnet.data.Document;
-import listnet.data.MSDocument;
-import listnet.data.Sample;
+import l2r.data.Document;
+import l2r.data.MSDocument;
+import l2r.data.Sample;
 
 
 /**

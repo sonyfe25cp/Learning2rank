@@ -1,4 +1,4 @@
-package listnet.process.util;
+package l2r.process.util;
 
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;

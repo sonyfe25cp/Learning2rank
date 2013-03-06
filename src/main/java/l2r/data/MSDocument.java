@@ -1,10 +1,4 @@
-/*
- * 作者：罗磊
- * 任何问题可以联系作者的Email：luoleicn@gmail.com
- * 
- * 遵循知识共享（CC By2.5）协议详见http://creativecommons.org/licenses/by/2.5/cn/
- */
-package listnet.data;
+package l2r.data;
 import java.util.ArrayList;
 
 
@@ -12,7 +6,7 @@ import java.util.ArrayList;
 /**
  * The Class MSDocument.
  */
-public class MSDocument_bak implements Document{
+public class MSDocument implements Document{
 
 	/** The qid. */
 	private int qid;
@@ -30,7 +24,7 @@ public class MSDocument_bak implements Document{
 	 * @param rel the rel
 	 * @param f the f
 	 */
-	public MSDocument_bak(int qid, int rel, ArrayList<Double> f)
+	public MSDocument(int qid, int rel, ArrayList<Double> f)
 	{
 		this.features = f;
 		this.relevance = rel;
@@ -69,11 +63,30 @@ public class MSDocument_bak implements Document{
 		
 		for (int i=2; i<strs.length; i++)
 		{
-			list.add(Double.parseDouble(strs[i].split(":")[1]));
+			if(validforTREC(i)){
+				list.add(Double.parseDouble(strs[i].split(":")[1]));
+			}
 		}
 
-		return new MSDocument_bak(qid, rel, list);
+		return new MSDocument(qid, rel, list);
 	}
+
+	/**
+	 * 由于某些特征没有实现....于是训练的时候也不用这些特征了...
+	 * @param i
+	 * @return
+	 * Aug 3, 2012
+	 */
+	private static boolean validforTREC(int index){
+		//41-45，66-70，91-95，116-125，128-136 这些维特征没有
+		if((index>=41&&index<=45)||(index>=66&&index<=70)||(index>=91&&index<=95)
+				||(index>=116&&index<=125)||(index>=128&&index<=136)){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see listnet.data.Document#getFeatures()

@@ -1,18 +1,11 @@
-/*
- * 作者：罗磊
- * 任何问题可以联系作者的Email：luoleicn@gmail.com
- * 
- * 遵循知识共享（CC By2.5）协议详见http://creativecommons.org/licenses/by/2.5/cn/
- */
-package listnet.analysis;
+package l2r.analysis;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 
-import listnet.module.ListNetModule;
-import listnet.module.Module;
+import l2r.module.ListNetModule;
+import l2r.module.Module;
 
 /**
  * The Class FeatureSort.
