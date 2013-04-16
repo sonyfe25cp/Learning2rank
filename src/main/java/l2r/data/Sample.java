@@ -10,6 +10,19 @@ public final class Sample {
 	/** The documents. */
 	private ArrayList<Document> documents = new ArrayList<Document>();
 	
+	public Document getQueryFeature(){
+		ArrayList<Double> queryFeature = new ArrayList<Double>();
+		int qid=0;
+		int relId = 0;
+		for(Document doc:documents){
+			qid = doc.getQid();
+			ArrayList<Double> feature = doc.getFeatures();
+			queryFeature.addAll(feature);
+		}
+		Document queryDoc = new MSDocument(qid,relId,queryFeature);
+		return queryDoc;
+	}
+	
 	/** The qid. */
 	private int qid;
 	

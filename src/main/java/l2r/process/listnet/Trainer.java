@@ -1,4 +1,4 @@
-package l2r.process.main;
+package l2r.process.listnet;
 
 import java.io.File;
 import java.io.IOException;
