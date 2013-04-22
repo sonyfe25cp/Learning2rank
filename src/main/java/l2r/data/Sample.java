@@ -1,6 +1,7 @@
 package l2r.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Class Sample.
@@ -9,6 +10,11 @@ public final class Sample {
 
 	/** The documents. */
 	private ArrayList<Document> documents = new ArrayList<Document>();
+	private int docCount=0;
+	//meanFeatures存放所有特征的平均值
+	private List<Double> meanFeatures=new ArrayList<Double>();
+	//medianFeatures存放最中间的一个特征向量（中位数）
+	private List<Double> medianFeatures=new ArrayList<Double>();
 	
 	public Document getQueryFeature(){
 		ArrayList<Double> queryFeature = new ArrayList<Double>();
@@ -44,6 +50,7 @@ public final class Sample {
 	public void add(Document doc)
 	{
 		documents.add(doc);
+		docCount++;
 	}
 
 	/**
@@ -55,6 +62,38 @@ public final class Sample {
 		return documents;
 	}
 
+
+	/**
+	 * 计算该sample的特征向量的平均值，方法是将每篇文档的特征向量的对应维的值相加，最后除以文档总数
+	 */
+	public void computeMeanFeatures(){
+		if(docCount==0)
+			return;
+		int featureSize=documents.get(0).getFeatures().size();
+		Double[] feature=new Double[featureSize];
+		for(int i=0;i<docCount;i++){
+			for(int j=0;j<featureSize;j++){
+				if(i==0){
+					feature[j]=documents.get(i).getFeatures().get(j);
+				}
+				else{
+					feature[j]+=documents.get(i).getFeatures().get(j);
+				}
+			}
+		}
+		for(int k=0;k<featureSize;k++){
+			meanFeatures.add(feature[k]/docCount);
+		}
+	}
+	
+	/**
+	 * 获取该sample最中间一个文档的特征向量
+	 */
+	public void computeMedianFeatures(){
+		int median=docCount/2;
+		medianFeatures=documents.get(median).getFeatures();
+	}
+	
 	/**
 	 * Gets the qid.
 	 *
@@ -62,6 +101,30 @@ public final class Sample {
 	 */
 	public int getQid() {
 		return qid;
+	}
+
+	public int getDocCount() {
+		return docCount;
+	}
+
+	public void setDocCount(int docCount) {
+		this.docCount = docCount;
+	}
+
+	public List<Double> getMeanFeatures() {
+		return meanFeatures;
+	}
+
+	public void setMeanFeatures(List<Double> meanFeatures) {
+		this.meanFeatures = meanFeatures;
+	}
+
+	public List<Double> getMedianFeatures() {
+		return medianFeatures;
+	}
+
+	public void setMedianFeatures(List<Double> medianFeatures) {
+		this.medianFeatures = medianFeatures;
 	}
 	
 }
