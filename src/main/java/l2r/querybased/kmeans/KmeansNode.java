@@ -20,6 +20,14 @@ public class KmeansNode {
 		this.setNumber(sample.getQid());
 	}
 	
+	public double getModule(){
+		double module=0.0;
+		for(double x:data){
+			module+=x*x;
+		}
+		return Math.sqrt(module);
+	}
+	
 	public List<Double> getData() {
 		return data;
 	}

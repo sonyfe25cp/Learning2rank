@@ -13,6 +13,8 @@ public final class Sample {
 	private int docCount=0;
 	//meanFeatures存放所有特征的平均值
 	private List<Double> meanFeatures=new ArrayList<Double>();
+	//存放meanFeatures各维之和
+	private double featuresCount=0.0;
 	//medianFeatures存放最中间的一个特征向量（中位数）
 	private List<Double> medianFeatures=new ArrayList<Double>();
 	
@@ -95,6 +97,18 @@ public final class Sample {
 	}
 	
 	/**
+	 * 用平均值计算该sample的模|sample|
+	 * @return
+	 */
+	public double getModule(){
+		double module=0.0;
+		for(double x: meanFeatures){
+			module+=x*x;
+		}
+		return Math.sqrt(module);
+	}
+	
+	/**
 	 * Gets the qid.
 	 *
 	 * @return the qid
@@ -125,6 +139,14 @@ public final class Sample {
 
 	public void setMedianFeatures(List<Double> medianFeatures) {
 		this.medianFeatures = medianFeatures;
+	}
+
+	public double getFeaturesCount() {
+		return featuresCount;
+	}
+
+	public void setFeaturesCount(double featuresCount) {
+		this.featuresCount = featuresCount;
 	}
 	
 }

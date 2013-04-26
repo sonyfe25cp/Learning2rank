@@ -16,6 +16,14 @@ public class Node {
 		this.features=features;
 	}
 	
+	public double getModule(){
+		double module=0.0;
+		for(double x:features){
+			module+=x*x;
+		}
+		return Math.sqrt(module);
+	}
+	
 	public int getNumber() {
 		return number;
 	}

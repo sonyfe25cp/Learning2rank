@@ -19,7 +19,7 @@ public final class MSNormalizer implements Normalizer{
 	private ArrayList<MaxMin> maxmin = new ArrayList<MSNormalizer.MaxMin>();
 	
 	
-	private MSNormalizer(){}
+	public MSNormalizer(){}
 	
 	public MSNormalizer(ArrayList<MaxMin> mm)
 	{
@@ -72,6 +72,38 @@ public final class MSNormalizer implements Normalizer{
 		return normalizer;
 	}
 	
+	/**
+	 * 这个函数功能跟上面的getNormalizer()相同，但这里是接收已读取的samples作为参数，因为一般情况下，会先读完数据，再进行处理
+	 * @param samples
+	 */
+	public void computeNorParameters(List<Sample> samples)
+	{
+		if(samples==null)
+			return;
+		int featureSize=samples.get(0).getDocuments().get(0).getFeatures().size();
+		//
+		for(int i=0;i<featureSize;i++)
+		{
+			this.maxmin.add(new MaxMin(0.0, Double.MAX_VALUE));
+		}
+		for(Sample sample: samples)
+		{
+			for(Document doc: sample.getDocuments())
+			{
+				for(int i=0;i<featureSize;i++)
+				{
+					double value=doc.getFeatures().get(i);
+					
+					if(value>maxmin.get(i).getMax())
+						this.maxmin.get(i).setMax(value);
+					if(value<maxmin.get(i).getMin())
+						this.maxmin.get(i).setMin(value);
+				}
+			}
+		}
+		
+	}
+	
 	/* 注意这个类没有更改doc对象，而是创建了一个全新的document的实例
 	 * @see listnet.process.Normalizer#normalize(listnet.data.Document)
 	 */
@@ -81,12 +113,10 @@ public final class MSNormalizer implements Normalizer{
 		int featureSize = this.maxmin.size();
 		ArrayList<Double> oldfeatures = doc.getFeatures();
 		ArrayList<Double> features = new ArrayList<Double>(featureSize);
-		
 		for (int i=0; i<featureSize; i++)
 		{
 			double max = maxmin.get(i).getMax();
 			double min = maxmin.get(i).getMin();
-			
 			if (max == min)
 				features.add(new Double(0.0));
 			else

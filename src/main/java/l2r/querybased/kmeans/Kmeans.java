@@ -9,33 +9,26 @@ import l2r.process.SampleReader;
 
 
 public class Kmeans {
+	//参数k，生成的类的个数
 	private int k;
-	private int m;//数据维数
-	private int dataSetLength;
-	private List<List<Double>> dataSet=new ArrayList<List<Double>>();
+	//每个节点数据维数
+	private int m;
+	//kmeans节点，由samples生成，记录相关信息
 	private List<KmeansNode> kNodes=new ArrayList<KmeansNode>();
+	//生成的类别
 	private List<Cluster> clusters=new ArrayList<Cluster>();
+	//类中心，单独存放便于判断
 	private List<KmeansNode> centers=new ArrayList<KmeansNode>();
-	private int maxRepeat=200;
+	//最大聚类次数，聚类终止的条件之一
+	private int maxRepeat=500;
+	//类中是否还会发生变化，聚类终止的条件之一
 	private boolean centersChange=true;
 	
 	/**
-	 * 构造函数，首先根据提供的数据构造kmeans节点，并且初始化k个类及类中心（随机查找）
+	 * 构造函数，初始化参数以及根据sample节点生成对应的kmeansNode节点，并初始化聚类（即第一次聚类过程，随机查找类中心点）
 	 * @param k
-	 * @param dataSet
+	 * @param samples
 	 */
-//	public Kmeans(int k, List<List<Double>> dataSet){
-//		this.k=k;
-//		this.dataSet=dataSet;
-//		if(dataSet!=null)
-//			m=dataSet.get(0).size();
-//		for(int i=0;i<dataSet.size();i++){
-//			KmeansNode node=new KmeansNode(dataSet.get(i));
-//			kNodes.add(node);
-//		}
-//		initCluster();
-//	}
-	
 	public Kmeans(int k, List<Sample> samples){
 		if(samples==null||samples.size()<k){
 			System.out.println("samples is null or k is larger than samples' size! ");
@@ -142,7 +135,7 @@ public class Kmeans {
 			}
 				
 		}
-		if(getError(centers, newCenters)<10)
+		if(getError(centers, newCenters)<0.1)
 			centersChange=false;
 		else
 			centers=newCenters;
@@ -183,12 +176,12 @@ public class Kmeans {
 	 */
 	public int getMinClusterIndex(KmeansNode node){
 		int index=0;
-		double minDistance=getDistance(node, centers.get(0));
+		double minDistance=getSimilarity(node, centers.get(0));
 		if(minDistance==0){
 			return index;
 		}
 		for(int i=1;i<k;i++){
-			double distance=getDistance(node, centers.get(i));
+			double distance=getSimilarity(node, centers.get(i));
 			if(distance==0)
 				return i;
 			else if(distance<minDistance){
@@ -218,6 +211,26 @@ public class Kmeans {
 			return -Math.sqrt(distance);
 	}
 	
+	/**
+	 * 计算两个节点的相似度，使用向量的余弦值计算，因为kmeans是按照距离最小进行聚类，因此此处返回余弦值的负值
+	 * @param node1
+	 * @param node2
+	 * @return
+	 */
+	public double getSimilarity(KmeansNode node1, KmeansNode node2){
+		double similarity=0.0;
+		for(int i=0;i<node1.getData().size();i++){
+			similarity+=node1.getData().get(i)*node2.getData().get(i);
+		}
+		return -(similarity/(node1.getModule()*node2.getModule()));
+	}
+	
+	/**
+	 * 判断两次聚类过程中某个类的中心点是否发生变化，用两个节点之间的距离表示，若距离小于0.1，表示没有发生变化
+	 * @param oldCenters
+	 * @param newCenters
+	 * @return
+	 */
 	public double getError(List<KmeansNode> oldCenters, List<KmeansNode> newCenters){
 		double error=0.0;
 		for(int i=0;i<oldCenters.size();i++){
@@ -229,12 +242,16 @@ public class Kmeans {
 		return error;
 	}
 	
+	/**
+	 * 输出展示每个类及类中的节点信息
+	 */
 	public void displayCluster(){
 		for(int i=0;i<clusters.size();i++){
 			System.out.println("cluster"+i+": "+"center: "+clusters.get(i).getCenter().getData());
 			for(int j=0;j<clusters.get(i).getNodeList().size();j++){
 				System.out.print(clusters.get(i).getNodeList().get(j).getNumber()+" ");
 			}
+			System.out.println();
 			System.out.println();
 		}
 	}
@@ -245,18 +262,7 @@ public class Kmeans {
 	public void setK(int k) {
 		this.k = k;
 	}
-	public int getDataSetLength() {
-		return dataSetLength;
-	}
-	public void setDataSetLength(int dataSetLength) {
-		this.dataSetLength = dataSetLength;
-	}
-	public List<List<Double>> getDataSet() {
-		return dataSet;
-	}
-	public void setDataSet(List<List<Double>> dataSet) {
-		this.dataSet = dataSet;
-	}
+
 	public List<KmeansNode> getkNodes() {
 		return kNodes;
 	}
@@ -284,7 +290,4 @@ public class Kmeans {
 		kmeans.displayCluster();
 		
 	}
-	
-	
-
 }
